@@ -11,19 +11,19 @@
       "config": { "distDir": "dist" }
     }
   ],
-    "routes": [
+  "routes": [
     {
       "src": "/api/(.*)",
       "dest": "api/index.js"
     },
     {
       "src": "/(.*)",
-      "dest": "/$1",
+      "dest": "client/$1",
       "check": true
     },
     {
       "src": "/(.*)",
-      "dest": "/index.html"
+      "dest": "client/index.html"
     }
   ]
 }
