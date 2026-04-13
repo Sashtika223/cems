@@ -27,7 +27,7 @@ const Login = () => {
         <motion.div 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="glass-card" 
+            className="glass-card form-card-responsive" 
             style={{ maxWidth: 400, margin: '5rem auto', padding: '2.5rem' }}
         >
             <h2 style={{ marginBottom: '1.5rem', textAlign: 'center' }} className="gradient-text">Welcome Back</h2>

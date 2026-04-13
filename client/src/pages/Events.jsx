@@ -26,24 +26,24 @@ const Events = () => {
     };
 
     return (
-        <div className="page-transition" style={{ maxWidth: 1200, margin: '0 auto', padding: '2rem 0' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '3rem' }}>
+        <div className="page-transition page-responsive" style={{ maxWidth: 1200, margin: '0 auto', padding: '2rem 1rem' }}>
+            <div className="flex-responsive" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '3rem' }}>
                 <h1 className="gradient-text">Explore Events</h1>
-                <div style={{ display: 'flex', gap: '1rem' }}>
-                    <div style={{ position: 'relative' }}>
+                <div className="search-bar-responsive" style={{ display: 'flex', gap: '1rem' }}>
+                    <div style={{ position: 'relative', width: '100%' }}>
                         <Search size={18} style={{ position: 'absolute', left: 10, top: 12, color: 'var(--text-muted)' }} />
                         <input 
                             type="text" 
                             placeholder="Search events..." 
                             value={search}
                             onChange={(e) => setSearch(e.target.value)}
-                            style={{ padding: '0.75rem 1rem 0.75rem 2.5rem', borderRadius: '0.5rem', background: 'var(--card-dark)', border: '1px solid var(--border-dark)', color: 'white' }}
+                            style={{ padding: '0.75rem 1rem 0.75rem 2.5rem', borderRadius: '0.5rem', background: 'var(--card-dark)', border: '1px solid var(--border-dark)', color: 'white', width: '100%', boxSizing: 'border-box' }}
                         />
                     </div>
                     <select 
                         value={category}
                         onChange={(e) => setCategory(e.target.value)}
-                        style={{ padding: '0.75rem', borderRadius: '0.5rem', background: 'var(--card-dark)', border: '1px solid var(--border-dark)', color: 'white' }}
+                        style={{ padding: '0.75rem', borderRadius: '0.5rem', background: 'var(--card-dark)', border: '1px solid var(--border-dark)', color: 'white', width: '100%', minWidth: 'fit-content' }}
                     >
                         <option value="">All Categories</option>
                         <option value="Technology">Technology</option>
@@ -57,7 +57,7 @@ const Events = () => {
             {loading ? (
                 <div style={{ textAlign: 'center', padding: '4rem' }}>Loading events...</div>
             ) : (
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '2rem' }}>
+                <div className="event-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '2rem' }}>
                     {events.map(event => (
                         <motion.div 
                             whileHover={{ y: -5 }}

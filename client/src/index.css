@@ -195,6 +195,171 @@ input:focus, select:focus, textarea:focus {
   100% { opacity: 1; transform: translateY(0); filter: blur(0); }
 }
 
+/* ===== RESPONSIVE DESIGN ===== */
+
+/* Tablet & below */
+@media (max-width: 1024px) {
+  h1 { font-size: 2rem !important; }
+  h2 { font-size: 1.4rem !important; }
+}
+
 @media (max-width: 768px) {
   .desktop-only { display: none; }
+
+  /* Navbar responsive */
+  .nav-responsive {
+    flex-direction: column !important;
+    gap: 0.75rem !important;
+    padding: 0.75rem 1rem !important;
+    margin: 0.5rem !important;
+    position: sticky;
+    top: 0.5rem;
+  }
+  .nav-responsive > div {
+    flex-wrap: wrap !important;
+    justify-content: center !important;
+    gap: 0.5rem !important;
+  }
+
+  /* Page containers */
+  .page-responsive {
+    padding: 1rem !important;
+    margin: 0 auto !important;
+  }
+
+  /* Flex layouts that should stack */
+  .flex-responsive {
+    flex-direction: column !important;
+    gap: 1rem !important;
+    align-items: stretch !important;
+  }
+
+  /* Grid layouts */
+  .grid-responsive {
+    grid-template-columns: 1fr !important;
+    gap: 1rem !important;
+  }
+
+  /* Stats grid (admin) */
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+
+  /* Table responsive */
+  .table-responsive {
+    display: block;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  .table-responsive table {
+    min-width: 500px;
+  }
+
+  /* Modal responsive */
+  .modal-responsive {
+    padding: 1.25rem !important;
+    width: 95% !important;
+    max-height: 90vh;
+    overflow-y: auto;
+  }
+  .modal-responsive form {
+    grid-template-columns: 1fr !important;
+  }
+  .modal-responsive form > div[style*="span 2"] {
+    grid-column: span 1 !important;
+  }
+
+  /* Profile responsive */
+  .profile-header-responsive {
+    flex-direction: column !important;
+    text-align: center !important;
+    gap: 1.5rem !important;
+    padding: 1.5rem !important;
+  }
+  .profile-header-responsive > div:last-child {
+    align-items: center;
+  }
+  .profile-info-responsive {
+    flex-direction: column !important;
+    gap: 0.5rem !important;
+    align-items: center !important;
+  }
+  .profile-grid-responsive {
+    grid-template-columns: 1fr !important;
+    gap: 1.5rem !important;
+  }
+
+  /* Form cards */
+  .form-card-responsive {
+    margin: 1.5rem 1rem !important;
+    padding: 1.5rem !important;
+    max-width: 100% !important;
+  }
+
+  /* Landing hero */
+  .hero-title {
+    font-size: 2.2rem !important;
+    line-height: 1.15 !important;
+  }
+  .hero-subtitle {
+    font-size: 1rem !important;
+    padding: 0 1rem;
+  }
+  .hero-buttons {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    padding: 0 1rem;
+  }
+  .hero-buttons a {
+    text-align: center;
+  }
+
+  /* Search bars */
+  .search-bar-responsive {
+    flex-direction: column !important;
+    gap: 0.75rem !important;
+  }
+  .search-bar-responsive input,
+  .search-bar-responsive select {
+    width: 100% !important;
+  }
+
+  /* Buttons */
+  .btn-primary {
+    padding: 0.7rem 1.2rem;
+    font-size: 0.9rem;
+  }
+
+  /* Cards padding */
+  .glass-card {
+    border-radius: 1rem;
+  }
+
+  /* Event cards grid */
+  .event-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* Small phones */
+@media (max-width: 480px) {
+  h1 { font-size: 1.6rem !important; }
+  h2 { font-size: 1.2rem !important; }
+  h3 { font-size: 1rem !important; }
+
+  .hero-title {
+    font-size: 1.8rem !important;
+  }
+
+  .stats-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .nav-responsive {
+    padding: 0.5rem 0.75rem !important;
+  }
+
+  body {
+    font-size: 14px;
+  }
 }

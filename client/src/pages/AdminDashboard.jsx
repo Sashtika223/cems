@@ -62,16 +62,18 @@ const AdminDashboard = () => {
         }
     };
 
+    const inputStyle = { width: '100%', padding: '0.75rem', borderRadius: '0.5rem', background: 'var(--bg-dark)', border: '1px solid var(--border-dark)', color: 'white', boxSizing: 'border-box' };
+
     return (
-        <div className="page-transition">
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
+        <div className="page-transition page-responsive" style={{ padding: '2rem 1rem' }}>
+            <div className="flex-responsive" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
                 <h1 className="gradient-text">Admin Control Center</h1>
                 <button onClick={() => setShowModal(true)} className="btn-primary" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                     <Plus size={20} /> Create Event
                 </button>
             </div>
 
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '1.5rem', marginBottom: '3rem' }}>
+            <div className="stats-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '1.5rem', marginBottom: '3rem' }}>
                 <div className="glass-card" style={{ padding: '1.5rem', textAlign: 'center' }}>
                     <Calendar color="var(--primary)" style={{ marginBottom: '0.5rem' }} />
                     <p style={{ color: 'var(--text-muted)' }}>Total Events</p>
@@ -80,7 +82,7 @@ const AdminDashboard = () => {
                 {/* Add more stats here */}
             </div>
 
-            <div className="glass-card" style={{ overflow: 'hidden' }}>
+            <div className="glass-card table-responsive" style={{ overflow: 'hidden' }}>
                 <table style={{ width: '100%', borderCollapse: 'collapse' }}>
                     <thead>
                         <tr style={{ textAlign: 'left', background: 'rgba(255,255,255,0.05)' }}>
@@ -108,38 +110,38 @@ const AdminDashboard = () => {
 
             <AnimatePresence>
                 {showModal && (
-                    <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.8)', display: 'flex', justifyContent: 'center', alignItems: 'center', zIndex: 2000 }}>
+                    <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.8)', display: 'flex', justifyContent: 'center', alignItems: 'center', zIndex: 2000, padding: '1rem' }}>
                         <motion.div 
                             initial={{ scale: 0.9, opacity: 0 }}
                             animate={{ scale: 1, opacity: 1 }}
                             exit={{ scale: 0.9, opacity: 0 }}
-                            className="glass-card" 
+                            className="glass-card modal-responsive" 
                             style={{ width: '90%', maxWidth: 600, padding: '2rem' }}
                         >
                             <h2>{editingEvent ? 'Edit Event' : 'New Event'}</h2>
                             <form onSubmit={handleSubmit} style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginTop: '1.5rem' }}>
                                 <div style={{ gridColumn: 'span 2' }}>
                                     <label>Title</label>
-                                    <input type="text" value={formData.title} onChange={(e) => setFormData({ ...formData, title: e.target.value })} style={{ width: '100%', padding: '0.75rem', borderRadius: '0.5rem', background: 'var(--bg-dark)', border: '1px solid var(--border-dark)', color: 'white' }} required />
+                                    <input type="text" value={formData.title} onChange={(e) => setFormData({ ...formData, title: e.target.value })} style={inputStyle} required />
                                 </div>
                                 <div style={{ gridColumn: 'span 2' }}>
-                                    <label style={{ display: 'flex', justifyContent: 'space-between' }}>
+                                    <label style={{ display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap' }}>
                                         Description 
                                         <span onClick={handleAIRecommend} style={{ fontSize: '0.8rem', color: 'var(--primary)', cursor: 'pointer' }}>Generate AI description ✨</span>
                                     </label>
-                                    <textarea value={formData.description} onChange={(e) => setFormData({ ...formData, description: e.target.value })} style={{ width: '100%', padding: '0.75rem', borderRadius: '0.5rem', background: 'var(--bg-dark)', border: '1px solid var(--border-dark)', color: 'white', minHeight: 100 }} required />
+                                    <textarea value={formData.description} onChange={(e) => setFormData({ ...formData, description: e.target.value })} style={{ ...inputStyle, minHeight: 100 }} required />
                                 </div>
                                 <div>
                                     <label>Date</label>
-                                    <input type="date" value={formData.date ? formData.date.split('T')[0] : ''} onChange={(e) => setFormData({ ...formData, date: e.target.value })} style={{ width: '100%', padding: '0.75rem', borderRadius: '0.5rem', background: 'var(--bg-dark)', border: '1px solid var(--border-dark)', color: 'white' }} required />
+                                    <input type="date" value={formData.date ? formData.date.split('T')[0] : ''} onChange={(e) => setFormData({ ...formData, date: e.target.value })} style={inputStyle} required />
                                 </div>
                                 <div>
                                     <label>Time</label>
-                                    <input type="time" value={formData.time} onChange={(e) => setFormData({ ...formData, time: e.target.value })} style={{ width: '100%', padding: '0.75rem', borderRadius: '0.5rem', background: 'var(--bg-dark)', border: '1px solid var(--border-dark)', color: 'white' }} required />
+                                    <input type="time" value={formData.time} onChange={(e) => setFormData({ ...formData, time: e.target.value })} style={inputStyle} required />
                                 </div>
                                 <div>
                                     <label>Category</label>
-                                    <select value={formData.category} onChange={(e) => setFormData({ ...formData, category: e.target.value })} style={{ width: '100%', padding: '0.75rem', borderRadius: '0.5rem', background: 'var(--bg-dark)', border: '1px solid var(--border-dark)', color: 'white' }}>
+                                    <select value={formData.category} onChange={(e) => setFormData({ ...formData, category: e.target.value })} style={inputStyle}>
                                         <option value="Technology">Technology</option>
                                         <option value="Workshop">Workshop</option>
                                         <option value="Social">Social</option>
@@ -149,11 +151,11 @@ const AdminDashboard = () => {
                                 </div>
                                 <div>
                                     <label>Location</label>
-                                    <input type="text" value={formData.location} onChange={(e) => setFormData({ ...formData, location: e.target.value })} placeholder="e.g. Auditorium" style={{ width: '100%', padding: '0.75rem', borderRadius: '0.5rem', background: 'var(--bg-dark)', border: '1px solid var(--border-dark)', color: 'white' }} required />
+                                    <input type="text" value={formData.location} onChange={(e) => setFormData({ ...formData, location: e.target.value })} placeholder="e.g. Auditorium" style={inputStyle} required />
                                 </div>
-                                <div style={{ gridColumn: 'span 2', display: 'flex', gap: '1rem', marginTop: '1.5rem' }}>
-                                    <button type="button" onClick={() => { setShowModal(false); setEditingEvent(null); }} style={{ flex: 1, padding: '1rem', background: 'rgba(255,255,255,0.08)', color: 'white', borderRadius: '0.75rem', fontWeight: 600, border: '1px solid var(--border-dark)' }}>Cancel</button>
-                                    <button type="submit" className="btn-primary" style={{ flex: 1, padding: '1rem' }}>{editingEvent ? 'Update Event' : 'Create Event'}</button>
+                                <div style={{ gridColumn: 'span 2', display: 'flex', gap: '1rem', marginTop: '1.5rem', flexWrap: 'wrap' }}>
+                                    <button type="button" onClick={() => { setShowModal(false); setEditingEvent(null); }} style={{ flex: 1, minWidth: 120, padding: '1rem', background: 'rgba(255,255,255,0.08)', color: 'white', borderRadius: '0.75rem', fontWeight: 600, border: '1px solid var(--border-dark)' }}>Cancel</button>
+                                    <button type="submit" className="btn-primary" style={{ flex: 1, minWidth: 120, padding: '1rem' }}>{editingEvent ? 'Update Event' : 'Create Event'}</button>
                                 </div>
                             </form>
                         </motion.div>

@@ -1,11 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { Calendar, User, LogOut, LayoutDashboard, Bell } from 'lucide-react';
+import { Calendar, User, LogOut, LayoutDashboard, Bell, Menu, X } from 'lucide-react';
 
 const Navbar = () => {
     const { user, logout } = useAuth();
     const navigate = useNavigate();
+    const [mobileOpen, setMobileOpen] = useState(false);
 
     const handleLogout = () => {
         logout();
@@ -13,13 +14,22 @@ const Navbar = () => {
     };
 
     return (
-        <nav className="glass-card" style={{ margin: '1rem', padding: '1rem 2rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', position: 'sticky', top: '1rem', zIndex: 1000 }}>
-            <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontWeight: 800, fontSize: '1.5rem', color: 'var(--primary)' }}>
-                <Calendar size={28} />
-                <span>CEMS</span>
-            </Link>
+        <nav className="glass-card nav-responsive" style={{ margin: '1rem', padding: '1rem 2rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', position: 'sticky', top: '1rem', zIndex: 1000 }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
+                <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontWeight: 800, fontSize: '1.5rem', color: 'var(--primary)' }}>
+                    <Calendar size={28} />
+                    <span>CEMS</span>
+                </Link>
+                <button
+                    className="mobile-menu-btn"
+                    onClick={() => setMobileOpen(!mobileOpen)}
+                    style={{ background: 'transparent', color: 'var(--text-light)', display: 'none', padding: '0.25rem' }}
+                >
+                    {mobileOpen ? <X size={24} /> : <Menu size={24} />}
+                </button>
+            </div>
 
-            <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+            <div className="nav-links" style={{ display: mobileOpen ? 'flex' : '', alignItems: 'center', gap: '1rem' }}>
                 <Link to="/events" className="btn-primary" style={{ padding: '0.5rem 1.2rem', fontSize: '0.9rem' }}>Events</Link>
                 {user ? (
                     <>
@@ -46,6 +56,25 @@ const Navbar = () => {
                     </div>
                 )}
             </div>
+
+            <style>{`
+                @media (max-width: 768px) {
+                    .mobile-menu-btn { display: block !important; }
+                    .nav-links {
+                        display: ${mobileOpen ? 'flex' : 'none'} !important;
+                        flex-direction: column !important;
+                        width: 100%;
+                        gap: 0.75rem !important;
+                        padding-top: 0.75rem;
+                        align-items: center !important;
+                    }
+                    .nav-links > div {
+                        flex-direction: column !important;
+                        width: 100%;
+                        align-items: center;
+                    }
+                }
+            `}</style>
         </nav>
     );
 };

@@ -5,11 +5,12 @@ import { Zap, Shield, Sparkles, LayoutGrid as Table } from 'lucide-react';
 
 const Landing = () => {
     return (
-        <div style={{ maxWidth: 1200, margin: '0 auto', padding: '4rem 0' }}>
+        <div style={{ maxWidth: 1200, margin: '0 auto', padding: '4rem 1rem' }}>
             <header style={{ textAlign: 'center', marginBottom: '6rem' }}>
                 <motion.h1 
                     initial={{ opacity: 0, y: -20 }}
                     animate={{ opacity: 1, y: 0 }}
+                    className="hero-title"
                     style={{ fontSize: '4.5rem', marginBottom: '1.5rem', lineHeight: 1.1 }}
                 >
                     Manage Campus Events <br />
@@ -19,6 +20,7 @@ const Landing = () => {
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ delay: 0.2 }}
+                    className="hero-subtitle"
                     style={{ fontSize: '1.25rem', color: 'var(--text-muted)', maxWidth: 700, margin: '0 auto 3rem' }}
                 >
                     Connect, discover, and participate in campus activities with AI-powered recommendations and real-time updates.
@@ -27,6 +29,7 @@ const Landing = () => {
                     initial={{ opacity: 0, scale: 0.9 }}
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ delay: 0.4 }}
+                    className="hero-buttons"
                     style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}
                 >
                     <Link to="/register" className="btn-primary" style={{ fontSize: '1.1rem', padding: '1rem 2.5rem' }}>Get Started</Link>
@@ -35,7 +38,7 @@ const Landing = () => {
                 </motion.div>
             </header>
 
-            <section style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '2rem', padding: '2rem' }}>
+            <section style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '2rem', padding: '0 1rem' }}>
                 <div className="glass-card" style={{ padding: '2rem' }}>
                     <Sparkles color="var(--primary)" size={32} style={{ marginBottom: '1rem' }} />
                     <h3>AI Recommendations</h3>

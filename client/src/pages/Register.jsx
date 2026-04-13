@@ -23,7 +23,7 @@ const Register = () => {
         <motion.div 
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
-            className="glass-card" 
+            className="glass-card form-card-responsive" 
             style={{ maxWidth: 450, margin: '3rem auto', padding: '2.5rem' }}
         >
             <h2 style={{ marginBottom: '1.5rem', textAlign: 'center' }} className="gradient-text">Create Account</h2>
