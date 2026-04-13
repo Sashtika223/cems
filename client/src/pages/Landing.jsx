@@ -30,11 +30,11 @@ const Landing = () => {
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ delay: 0.4 }}
                     className="hero-buttons"
-                    style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}
+                    style={{ display: 'flex', gap: '1.25rem', justifyContent: 'center', flexWrap: 'wrap' }}
                 >
-                    <Link to="/register" className="btn-primary" style={{ fontSize: '1.1rem', padding: '1rem 2.5rem' }}>Get Started</Link>
-                    <Link to="/events" className="btn-primary" style={{ fontSize: '1.1rem', padding: '1rem 2.5rem' }}>View Events</Link>
-                    <Link to="/login" className="btn-primary" style={{ fontSize: '1.1rem', padding: '1rem 2.5rem' }}>Login</Link>
+                    <Link to="/register" className="btn-primary" style={{ fontSize: '1.1rem', padding: '1rem 2.5rem', whiteSpace: 'nowrap' }}>Get Started</Link>
+                    <Link to="/events" className="btn-primary" style={{ fontSize: '1.1rem', padding: '1rem 2.5rem', whiteSpace: 'nowrap' }}>View Events</Link>
+                    <Link to="/login" className="btn-primary" style={{ fontSize: '1.1rem', padding: '1rem 2.5rem', whiteSpace: 'nowrap' }}>Login</Link>
                 </motion.div>
             </header>
 

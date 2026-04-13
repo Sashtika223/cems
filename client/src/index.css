@@ -138,6 +138,7 @@ input:focus, select:focus, textarea:focus {
   box-shadow: var(--shadow-glow);
   position: relative;
   overflow: hidden;
+  white-space: nowrap;
 }
 
 .btn-primary::after {

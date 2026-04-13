@@ -28,7 +28,7 @@ const App = () => {
             <Router>
                 <div style={{ minHeight: '100vh', paddingBottom: '2rem' }}>
                     <Navbar />
-                    <div style={{ padding: '0 2rem' }}>
+                    <div className="page-responsive" style={{ padding: '0 2rem' }}>
                         <Routes>
                             <Route path="/" element={<Landing />} />
                             <Route path="/login" element={<Login />} />

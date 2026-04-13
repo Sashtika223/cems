@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import axios from 'axios';
+import api from '../services/api';
 import { toast } from 'react-hot-toast';
 import { motion } from 'framer-motion';
 
@@ -11,7 +11,7 @@ const Register = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            await axios.post('http://localhost:5000/api/auth/register', formData);
+            await api.post('/auth/register', formData);
             toast.success('Registration successful! Please login.');
             navigate('/login');
         } catch (err) {

@@ -14,23 +14,16 @@ const Navbar = () => {
     };
 
     return (
-        <nav className="glass-card nav-responsive" style={{ margin: '1rem', padding: '1rem 2rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', position: 'sticky', top: '1rem', zIndex: 1000 }}>
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
+        <nav className="glass-card" style={{ margin: '1rem', padding: '1rem 2rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', position: 'sticky', top: '1rem', zIndex: 1000 }}>
+            <div style={{ display: 'flex', alignItems: 'center' }}>
                 <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontWeight: 800, fontSize: '1.5rem', color: 'var(--primary)' }}>
                     <Calendar size={28} />
-                    <span>CEMS</span>
+                    <span className="desktop-only">CEMS</span>
                 </Link>
-                <button
-                    className="mobile-menu-btn"
-                    onClick={() => setMobileOpen(!mobileOpen)}
-                    style={{ background: 'transparent', color: 'var(--text-light)', display: 'none', padding: '0.25rem' }}
-                >
-                    {mobileOpen ? <X size={24} /> : <Menu size={24} />}
-                </button>
             </div>
 
-            <div className="nav-links" style={{ display: mobileOpen ? 'flex' : '', alignItems: 'center', gap: '1rem' }}>
-                <Link to="/events" className="btn-primary" style={{ padding: '0.5rem 1.2rem', fontSize: '0.9rem' }}>Events</Link>
+            <div className="nav-links" style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                <Link to="/events" className="btn-primary" style={{ padding: '0.5rem 1.2rem', fontSize: '0.9rem', whiteSpace: 'nowrap' }}>Events</Link>
                 {user ? (
                     <>
                         {user.role === 'admin' ? (
@@ -51,17 +44,35 @@ const Navbar = () => {
                     </>
                 ) : (
                     <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
-                        <Link to="/login" className="btn-primary" style={{ padding: '0.5rem 1.2rem', fontSize: '0.9rem' }}>Login</Link>
-                        <Link to="/register" className="btn-primary" style={{ padding: '0.5rem 1.2rem', fontSize: '0.9rem' }}>Sign Up</Link>
+                        <Link to="/login" className="btn-primary" style={{ padding: '0.5rem 1.2rem', fontSize: '0.9rem', whiteSpace: 'nowrap' }}>Login</Link>
+                        <Link to="/register" className="btn-primary" style={{ padding: '0.5rem 1.2rem', fontSize: '0.9rem', whiteSpace: 'nowrap' }}>Sign Up</Link>
                     </div>
                 )}
             </div>
+
+            <button
+                className="mobile-menu-btn"
+                onClick={() => setMobileOpen(!mobileOpen)}
+                style={{ background: 'transparent', color: 'var(--text-light)', display: 'none', padding: '0.25rem' }}
+            >
+                {mobileOpen ? <X size={24} /> : <Menu size={24} />}
+            </button>
 
             <style>{`
                 @media (max-width: 768px) {
                     .mobile-menu-btn { display: block !important; }
                     .nav-links {
                         display: ${mobileOpen ? 'flex' : 'none'} !important;
+                        position: ${mobileOpen ? 'absolute' : 'static'};
+                        top: 100%;
+                        left: 0;
+                        right: 0;
+                        background: var(--glass);
+                        backdrop-filter: blur(16px);
+                        padding: 1rem;
+                        border-radius: 0 0 1.25rem 1.25rem;
+                        border: 1px solid var(--border-dark);
+                        border-top: none;
                         flex-direction: column !important;
                         width: 100%;
                         gap: 0.75rem !important;
