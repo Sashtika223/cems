@@ -66,50 +66,68 @@ const AdminDashboard = () => {
         }
     };
 
+    const formatDate = (dateString) => {
+        try {
+            const date = new Date(dateString);
+            return isNaN(date.getTime()) ? 'Date TBD' : date.toLocaleDateString();
+        } catch (e) {
+            return 'Date TBD';
+        }
+    };
+
     const inputStyle = { width: '100%', padding: '0.75rem', borderRadius: '0.5rem', background: 'var(--bg-dark)', border: '1px solid var(--border-dark)', color: 'white', boxSizing: 'border-box' };
 
     return (
-        <div className="page-transition page-responsive" style={{ padding: '2rem 1rem' }}>
-            <div className="flex-responsive" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
+        <div className="page-transition page-responsive" style={{ padding: '1rem' }}>
+            <div className="flex-responsive" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem', gap: '1rem' }}>
                 <h1 className="gradient-text">Admin Control Center</h1>
                 <button onClick={() => setShowModal(true)} className="btn-primary" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                     <Plus size={20} /> Create Event
                 </button>
             </div>
 
-            <div className="stats-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '1.5rem', marginBottom: '3rem' }}>
+            <div className="stats-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1.5rem', marginBottom: '3rem' }}>
                 <div className="glass-card" style={{ padding: '1.5rem', textAlign: 'center' }}>
                     <Calendar color="var(--primary)" style={{ marginBottom: '0.5rem' }} />
                     <p style={{ color: 'var(--text-muted)' }}>Total Events</p>
-                    <h2>{events.length}</h2>
+                    <h2 style={{ fontSize: '2rem' }}>{events.length}</h2>
                 </div>
-                {/* Add more stats here */}
+                <div className="glass-card" style={{ padding: '1.5rem', textAlign: 'center' }}>
+                    <Users color="var(--secondary)" style={{ marginBottom: '0.5rem' }} />
+                    <p style={{ color: 'var(--text-muted)' }}>Total Users</p>
+                    <h2 style={{ fontSize: '2rem' }}>1,240</h2>
+                </div>
             </div>
 
-            <div className="glass-card table-responsive" style={{ overflow: 'hidden' }}>
-                <table style={{ width: '100%', borderCollapse: 'collapse' }}>
-                    <thead>
-                        <tr style={{ textAlign: 'left', background: 'rgba(255,255,255,0.05)' }}>
-                            <th style={{ padding: '1rem' }}>Title</th>
-                            <th style={{ padding: '1rem' }}>Category</th>
-                            <th style={{ padding: '1rem' }}>Date</th>
-                            <th style={{ padding: '1rem' }}>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {events.map(event => (
-                            <tr key={event.id} style={{ borderBottom: '1px solid var(--border-dark)' }}>
-                                <td style={{ padding: '1rem' }}>{event.title}</td>
-                                <td style={{ padding: '1rem' }}>{event.category}</td>
-                                <td style={{ padding: '1rem' }}>{new Date(event.date).toLocaleDateString()}</td>
-                                <td style={{ padding: '1rem', display: 'flex', gap: '1rem' }}>
-                                    <button onClick={() => { setEditingEvent(event); setFormData(event); setShowModal(true); }} style={{ color: 'var(--primary)', background: 'transparent' }}><Edit size={18} /></button>
-                                    <button onClick={() => deleteEvent(event.id)} style={{ color: 'var(--error)', background: 'transparent' }}><Trash2 size={18} /></button>
-                                </td>
+            <div className="glass-card" style={{ overflow: 'hidden' }}>
+                <div className="table-responsive">
+                    <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+                        <thead>
+                            <tr style={{ textAlign: 'left', background: 'rgba(255,255,255,0.05)' }}>
+                                <th style={{ padding: '1rem' }}>Title</th>
+                                <th style={{ padding: '1rem' }}>Category</th>
+                                <th style={{ padding: '1rem' }}>Date</th>
+                                <th style={{ padding: '1rem' }}>Actions</th>
                             </tr>
-                        ))}
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            {events.map(event => (
+                                <tr key={event.id} style={{ borderBottom: '1px solid var(--border-dark)' }}>
+                                    <td style={{ padding: '1rem' }}>{event.title}</td>
+                                    <td style={{ padding: '1rem' }}><span style={{ fontSize: '0.8rem', background: 'rgba(255,255,255,0.05)', padding: '0.2rem 0.5rem', borderRadius: '1rem' }}>{event.category}</span></td>
+                                    <td style={{ padding: '1rem' }}>{formatDate(event.date)}</td>
+                                    <td style={{ padding: '1rem' }}>
+                                        <div style={{ display: 'flex', gap: '0.75rem' }}>
+                                            <button onClick={() => { setEditingEvent(event); setFormData(event); setShowModal(true); }} style={{ color: 'var(--primary)', background: 'transparent' }}><Edit size={18} /></button>
+                                            <button onClick={() => deleteEvent(event.id)} style={{ color: 'var(--error)', background: 'transparent' }}><Trash2 size={18} /></button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+                {events.length === 0 && <p style={{ textAlign: 'center', padding: '3rem', color: 'var(--text-muted)' }}>No events created yet.</p>}
             </div>
 
             <AnimatePresence>

@@ -16,7 +16,17 @@ import Chatbot from './components/Chatbot';
 
 const ProtectedRoute = ({ children, role }) => {
     const { user, loading } = useAuth();
-    if (loading) return <div>Loading...</div>;
+    
+    if (loading) {
+        return (
+            <div style={{ minHeight: '60vh', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
+                <div className="spinner" style={{ width: 40, height: 40, border: '3px solid rgba(139, 92, 246, 0.2)', borderTopColor: 'var(--primary)', borderRadius: '50%', animation: 'spin 1s linear infinite' }}></div>
+                <p style={{ marginTop: '1.5rem', color: 'var(--text-muted)', fontSize: '1.1rem' }}>Authenticating...</p>
+                <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
+            </div>
+        );
+    }
+    
     if (!user) return <Navigate to="/login" />;
     if (role && user.role !== role) return <Navigate to="/" />;
     return children;
@@ -26,9 +36,9 @@ const App = () => {
     return (
         <AuthProvider>
             <Router>
-                <div style={{ minHeight: '100vh', paddingBottom: '2rem' }}>
+                <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
                     <Navbar />
-                    <div className="page-responsive" style={{ padding: '0 2rem' }}>
+                    <main className="page-responsive" style={{ flex: 1, padding: '1rem' }}>
                         <Routes>
                             <Route path="/" element={<Landing />} />
                             <Route path="/login" element={<Login />} />
@@ -55,8 +65,9 @@ const App = () => {
                                     <Profile />
                                 </ProtectedRoute>
                             } />
+                            <Route path="*" element={<Navigate to="/" />} />
                         </Routes>
-                    </div>
+                    </main>
                     <Toaster position="bottom-right" />
                     <Chatbot />
                 </div>

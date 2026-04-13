@@ -1,5 +1,5 @@
 import React, { createContext, useState, useContext, useEffect } from 'react';
-import axios from 'axios';
+import api from '../services/api';
 
 const AuthContext = createContext();
 
@@ -10,23 +10,32 @@ export const AuthProvider = ({ children }) => {
     useEffect(() => {
         const token = localStorage.getItem('token');
         if (token) {
-            fetchProfile(token);
+            fetchProfile();
         } else {
             setLoading(false);
         }
     }, []);
 
-    const fetchProfile = async (token) => {
+    const fetchProfile = async () => {
+        console.log("AuthContext: Fetching profile...");
         try {
-            const baseURL = import.meta.env.VITE_API_URL || (import.meta.env.PROD ? '/api' : 'http://localhost:5000/api');
-            const res = await axios.get(`${baseURL}/auth/profile`, {
-                headers: { Authorization: `Bearer ${token}` }
-            });
-            setUser(res.data);
+            const res = await api.get('/auth/profile');
+            console.log("AuthContext: Profile received:", res.data ? "Success" : "Empty");
+            if (res.data) {
+                setUser(res.data);
+            } else {
+                throw new Error('Invalid profile data');
+            }
         } catch (err) {
+            console.error('AuthContext: Profile fetch failed:', err.message);
+            if (err.response) {
+                console.error('AuthContext: Server error status:', err.response.status);
+            }
             localStorage.removeItem('token');
+            setUser(null);
         } finally {
             setLoading(false);
+            console.log("AuthContext: Loading finished.");
         }
     };
 
@@ -41,7 +50,7 @@ export const AuthProvider = ({ children }) => {
     };
 
     return (
-        <AuthContext.Provider value={{ user, login, logout, loading }}>
+        <AuthContext.Provider value={{ user, login, logout, loading, fetchProfile }}>
             {children}
         </AuthContext.Provider>
     );
