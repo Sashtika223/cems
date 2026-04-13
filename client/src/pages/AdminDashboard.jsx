@@ -15,8 +15,12 @@ const AdminDashboard = () => {
     }, []);
 
     const fetchEvents = async () => {
-        const res = await api.get('/events');
-        setEvents(res.data);
+        try {
+            const res = await api.get('/events');
+            setEvents(res.data || []);
+        } catch (err) {
+            console.error(err);
+        }
     };
 
     const handleAIRecommend = async () => {

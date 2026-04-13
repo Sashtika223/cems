@@ -21,8 +21,8 @@ const StudentDashboard = () => {
                 api.get(`/events?search=${search}&category=${category}`),
                 api.get('/events/recommendations')
             ]);
-            setEvents(eventsRes.data);
-            setRecommendations(recRes.data);
+            setEvents(eventsRes.data || []);
+            setRecommendations(typeof recRes.data === 'string' ? [] : (recRes.data || []));
         } catch (err) {
             console.error(err);
         } finally {
