@@ -1,11 +1,13 @@
 const { Pool } = require('pg');
 require('dotenv').config();
-if (!process.env.DATABASE_URL) {
-    console.error('FATAL ERROR: DATABASE_URL is not defined in environment variables.');
+const dbUrl = process.env.POSTGRES_URL || process.env.DATABASE_URL;
+
+if (!dbUrl) {
+    console.error('FATAL ERROR: No Database URL found (POSTGRES_URL or DATABASE_URL).');
 }
 
 const pool = new Pool({
-    connectionString: process.env.DATABASE_URL,
+    connectionString: dbUrl,
     ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false,
     connectionTimeoutMillis: 5000, 
     idleTimeoutMillis: 30000,      
