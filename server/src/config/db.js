@@ -8,7 +8,7 @@ if (!dbUrl) {
 
 const pool = new Pool({
     connectionString: dbUrl,
-    ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false,
+    ssl: dbUrl.includes('localhost') || dbUrl.includes('127.0.0.1') ? false : { rejectUnauthorized: false },
     connectionTimeoutMillis: 5000, 
     idleTimeoutMillis: 30000,      
 });

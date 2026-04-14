@@ -13,6 +13,7 @@ const registrationRoutes = require('./src/routes/registration.routes');
 const bookmarkRoutes = require('./src/routes/bookmark.routes');
 const feedbackRoutes = require('./src/routes/feedback.routes');
 const notificationRoutes = require('./src/routes/notification.routes');
+const uploadRoutes = require('./src/routes/upload.routes');
 
 const app = express();
 const server = http.createServer(app);
@@ -59,6 +60,7 @@ app.use('/api/registrations', registrationRoutes);
 app.use('/api/bookmarks', bookmarkRoutes);
 app.use('/api/feedbacks', feedbackRoutes);
 app.use('/api/notifications', notificationRoutes);
+app.use('/api/uploads', uploadRoutes);
 
 // Serve static files from the React app
 if (process.env.NODE_ENV === 'production') {
