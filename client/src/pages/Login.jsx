@@ -19,7 +19,10 @@ const Login = () => {
             toast.success('Welcome back!');
             navigate(res.data.user.role === 'admin' ? '/admin' : '/dashboard');
         } catch (err) {
-            toast.error(err.response?.data?.error || 'Login failed');
+            console.error('Login Error:', err);
+            const message = err.response?.data?.error || 
+                           (err.code === 'ERR_NETWORK' ? 'Server unreachable. Is the backend running?' : 'Login failed');
+            toast.error(message);
         }
     };
 
