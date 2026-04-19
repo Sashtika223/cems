@@ -1,17 +1,33 @@
 const { Pool } = require('pg');
 require('dotenv').config();
+
 const dbUrl = process.env.POSTGRES_URL || process.env.DATABASE_URL;
 
-if (!dbUrl) {
-    console.error('FATAL ERROR: No Database URL found (POSTGRES_URL or DATABASE_URL).');
+const poolConfig = {
+    connectionTimeoutMillis: 30000,
+    idleTimeoutMillis: 60000,
+};
+
+// If we have separate components, use them to avoid URI parsing issues with special characters
+if (process.env.DB_PASSWORD) {
+    Object.assign(poolConfig, {
+        user: process.env.DB_USER || 'postgres',
+        password: process.env.DB_PASSWORD,
+        host: process.env.DB_HOST,
+        port: process.env.DB_PORT || 5432,
+        database: process.env.DB_NAME || 'postgres',
+        ssl: { rejectUnauthorized: false }
+    });
+} else if (dbUrl) {
+    Object.assign(poolConfig, {
+        connectionString: dbUrl,
+        ssl: dbUrl.includes('localhost') || dbUrl.includes('127.0.0.1') ? false : { rejectUnauthorized: false },
+    });
+} else {
+    console.error('FATAL ERROR: No Database configuration found.');
 }
 
-const pool = new Pool({
-    connectionString: dbUrl,
-    ssl: dbUrl.includes('localhost') || dbUrl.includes('127.0.0.1') ? false : { rejectUnauthorized: false },
-    connectionTimeoutMillis: 5000, 
-    idleTimeoutMillis: 30000,      
-});
+const pool = new Pool(poolConfig);
 
 pool.on('connect', () => {
     console.log('Connected to PostgreSQL Database');
