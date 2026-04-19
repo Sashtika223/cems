@@ -29,10 +29,14 @@ app.use(helmet({
     contentSecurityPolicy: {
         directives: {
             ...helmet.contentSecurityPolicy.getDefaultDirectives(),
-            "img-src": ["'self'", "data:", "https:"],
+            "img-src": ["'self'", "data:", "https:", "https://images.unsplash.com"],
             "script-src": ["'self'", "'unsafe-inline'", "'unsafe-eval'"],
+            "style-src": ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"],
+            "font-src": ["'self'", "https://fonts.gstatic.com"],
+            "connect-src": ["'self'", "https://*.supabase.co", "wss://*.supabase.co"]
         },
     },
+    crossOriginEmbedderPolicy: false
 }));
 app.use(morgan('dev'));
 app.use(cors());
