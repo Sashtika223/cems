@@ -9,13 +9,20 @@ const poolConfig = {
 };
 
 // If we have separate components, use them to avoid URI parsing issues with special characters
-if (process.env.DB_PASSWORD) {
+// Map standard names to their values, checking for Vercel-specific names as fallbacks
+const user = process.env.DB_USER || process.env.DATABASE_POSTGRES_USER || 'postgres';
+const password = process.env.DB_PASSWORD || process.env.DATABASE_POSTGRES_PASSWORD;
+const host = process.env.DB_HOST || process.env.DATABASE_POSTGRES_HOST;
+const database = process.env.DB_NAME || process.env.DATABASE_POSTGRES_DATABASE || 'postgres';
+const port = process.env.DB_PORT || 5432;
+
+if (password && host) {
     Object.assign(poolConfig, {
-        user: process.env.DB_USER || 'postgres',
-        password: process.env.DB_PASSWORD,
-        host: process.env.DB_HOST,
-        port: process.env.DB_PORT || 5432,
-        database: process.env.DB_NAME || 'postgres',
+        user,
+        password,
+        host,
+        port,
+        database,
         ssl: { rejectUnauthorized: false }
     });
 } else if (dbUrl) {
@@ -24,8 +31,9 @@ if (process.env.DB_PASSWORD) {
         ssl: dbUrl.includes('localhost') || dbUrl.includes('127.0.0.1') ? false : { rejectUnauthorized: false },
     });
 } else {
-    console.error('FATAL ERROR: No Database configuration found.');
+    console.warn('⚠️ No specific Database credentials found. Falling back to default connection logic.');
 }
+
 
 const pool = new Pool(poolConfig);
 
