@@ -19,9 +19,10 @@ const AdminDashboard = () => {
     const fetchUnapprovedAdmins = async () => {
         try {
             const res = await api.get('/auth/unapproved-admins');
-            setUnapprovedAdmins(res.data || []);
+            setUnapprovedAdmins(Array.isArray(res.data) ? res.data : []);
         } catch (err) {
-            console.error(err);
+            console.error('Fetch Unapproved Admins Error:', err);
+            setUnapprovedAdmins([]);
         }
     };
 
@@ -49,9 +50,10 @@ const AdminDashboard = () => {
     const fetchEvents = async () => {
         try {
             const res = await api.get('/events');
-            setEvents(res.data || []);
+            setEvents(Array.isArray(res.data) ? res.data : []);
         } catch (err) {
-            console.error(err);
+            console.error('Fetch Events Error:', err);
+            setEvents([]);
         }
     };
 
@@ -145,8 +147,8 @@ const AdminDashboard = () => {
                         <tbody>
                             {events.map(event => (
                                 <tr key={event.id} style={{ borderBottom: '1px solid var(--border-dark)' }}>
-                                    <td style={{ padding: '1rem' }}>{event.title}</td>
-                                    <td style={{ padding: '1rem' }}><span style={{ fontSize: '0.8rem', background: 'rgba(255,255,255,0.05)', padding: '0.2rem 0.5rem', borderRadius: '1rem' }}>{event.category}</span></td>
+                                    <td style={{ padding: '1rem' }}>{String(event.title || '')}</td>
+                                    <td style={{ padding: '1rem' }}><span style={{ fontSize: '0.8rem', background: 'rgba(255,255,255,0.05)', padding: '0.2rem 0.5rem', borderRadius: '1rem' }}>{String(event.category || '')}</span></td>
                                     <td style={{ padding: '1rem' }}>{formatDate(event.date)}</td>
                                     <td style={{ padding: '1rem' }}>
                                         <div style={{ display: 'flex', gap: '0.75rem' }}>
@@ -178,8 +180,8 @@ const AdminDashboard = () => {
                                 <tbody>
                                     {unapprovedAdmins.map(admin => (
                                         <tr key={admin.id} style={{ borderBottom: '1px solid var(--border-dark)' }}>
-                                            <td style={{ padding: '1rem' }}>{admin.name}</td>
-                                            <td style={{ padding: '1rem' }}>{admin.email}</td>
+                                            <td style={{ padding: '1rem' }}>{String(admin.name || '')}</td>
+                                            <td style={{ padding: '1rem' }}>{String(admin.email || '')}</td>
                                             <td style={{ padding: '1rem' }}>
                                                 <div style={{ display: 'flex', gap: '0.75rem' }}>
                                                     <button onClick={() => handleApproveAdmin(admin.id)} className="btn-primary" style={{ padding: '0.5rem 1rem', fontSize: '0.9rem' }}>Approve</button>
