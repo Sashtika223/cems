@@ -15,10 +15,12 @@ exports.register = async (req, res) => {
         // Hash password
         const hashedPassword = await bcrypt.hash(password, 10);
 
+        const isApproved = role === 'admin' ? false : true;
+
         // Insert user
         const newUser = await db.query(
-            'INSERT INTO users (name, email, password, role, interests) VALUES ($1, $2, $3, $4, $5) RETURNING id, name, email, role',
-            [name, email, hashedPassword, role || 'student', interests || []]
+            'INSERT INTO users (name, email, password, role, interests, is_approved) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id, name, email, role',
+            [name, email, hashedPassword, role || 'student', interests || [], isApproved]
         );
 
         res.status(201).json({ message: 'User registered successfully', user: newUser.rows[0] });
@@ -39,6 +41,10 @@ exports.login = async (req, res) => {
         }
 
         const user = result.rows[0];
+
+        if (user.role === 'admin' && !user.is_approved) {
+            return res.status(403).json({ error: 'Waiting for the host to approve' });
+        }
 
         // Check password
         const isMatch = await bcrypt.compare(password, user.password);
@@ -74,5 +80,34 @@ exports.getProfile = async (req, res) => {
         res.json(result.rows[0]);
     } catch (err) {
         res.status(500).json({ error: 'Server error' });
+    }
+};
+
+exports.getUnapprovedAdmins = async (req, res) => {
+    try {
+        const result = await db.query("SELECT id, name, email FROM users WHERE role = 'admin' AND is_approved = FALSE");
+        res.json(result.rows);
+    } catch (err) {
+        res.status(500).json({ error: 'Server error fetching unapproved admins' });
+    }
+};
+
+exports.approveAdmin = async (req, res) => {
+    try {
+        const { id } = req.params;
+        await db.query('UPDATE users SET is_approved = TRUE WHERE id = $1', [id]);
+        res.json({ message: 'Admin approved successfully' });
+    } catch (err) {
+        res.status(500).json({ error: 'Server error approving admin' });
+    }
+};
+
+exports.rejectAdmin = async (req, res) => {
+    try {
+        const { id } = req.params;
+        await db.query('DELETE FROM users WHERE id = $1', [id]);
+        res.json({ message: 'Admin rejected and removed' });
+    } catch (err) {
+        res.status(500).json({ error: 'Server error rejecting admin' });
     }
 };

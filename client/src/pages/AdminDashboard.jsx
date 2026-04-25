@@ -6,13 +6,45 @@ import { motion, AnimatePresence } from 'framer-motion';
 
 const AdminDashboard = () => {
     const [events, setEvents] = useState([]);
+    const [unapprovedAdmins, setUnapprovedAdmins] = useState([]);
     const [showModal, setShowModal] = useState(false);
     const [editingEvent, setEditingEvent] = useState(null);
     const [formData, setFormData] = useState({ title: '', description: '', date: '', time: '', location: '', category: 'Technology', image_url: '' });
 
     useEffect(() => {
         fetchEvents();
+        fetchUnapprovedAdmins();
     }, []);
+
+    const fetchUnapprovedAdmins = async () => {
+        try {
+            const res = await api.get('/auth/unapproved-admins');
+            setUnapprovedAdmins(res.data || []);
+        } catch (err) {
+            console.error(err);
+        }
+    };
+
+    const handleApproveAdmin = async (id) => {
+        try {
+            await api.put(`/auth/approve-admin/${id}`);
+            toast.success('Admin approved successfully');
+            fetchUnapprovedAdmins();
+        } catch (err) {
+            toast.error('Failed to approve admin');
+        }
+    };
+
+    const handleRejectAdmin = async (id) => {
+        if (!window.confirm('Are you sure you want to reject and delete this admin request?')) return;
+        try {
+            await api.delete(`/auth/reject-admin/${id}`);
+            toast.success('Admin rejected');
+            fetchUnapprovedAdmins();
+        } catch (err) {
+            toast.error('Failed to reject admin');
+        }
+    };
 
     const fetchEvents = async () => {
         try {
@@ -129,6 +161,39 @@ const AdminDashboard = () => {
                 </div>
                 {events.length === 0 && <p style={{ textAlign: 'center', padding: '3rem', color: 'var(--text-muted)' }}>No events created yet.</p>}
             </div>
+
+            {unapprovedAdmins.length > 0 && (
+                <div style={{ marginTop: '3rem' }}>
+                    <h2 className="gradient-text" style={{ marginBottom: '1.5rem' }}>Pending Admin Approvals</h2>
+                    <div className="glass-card" style={{ overflow: 'hidden' }}>
+                        <div className="table-responsive">
+                            <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+                                <thead>
+                                    <tr style={{ textAlign: 'left', background: 'rgba(255,255,255,0.05)' }}>
+                                        <th style={{ padding: '1rem' }}>Name</th>
+                                        <th style={{ padding: '1rem' }}>Email</th>
+                                        <th style={{ padding: '1rem' }}>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {unapprovedAdmins.map(admin => (
+                                        <tr key={admin.id} style={{ borderBottom: '1px solid var(--border-dark)' }}>
+                                            <td style={{ padding: '1rem' }}>{admin.name}</td>
+                                            <td style={{ padding: '1rem' }}>{admin.email}</td>
+                                            <td style={{ padding: '1rem' }}>
+                                                <div style={{ display: 'flex', gap: '0.75rem' }}>
+                                                    <button onClick={() => handleApproveAdmin(admin.id)} className="btn-primary" style={{ padding: '0.5rem 1rem', fontSize: '0.9rem' }}>Approve</button>
+                                                    <button onClick={() => handleRejectAdmin(admin.id)} style={{ padding: '0.5rem 1rem', fontSize: '0.9rem', background: 'transparent', border: '1px solid var(--error)', color: 'var(--error)', borderRadius: '0.5rem', cursor: 'pointer' }}>Reject</button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            )}
 
             <AnimatePresence>
                 {showModal && (
