@@ -1,20 +1,17 @@
 const { Pool } = require('pg');
 require('dotenv').config();
 
-const dbUrl = process.env.POSTGRES_URL || process.env.DATABASE_URL;
+const dbUrl = process.env.DATABASE_URL;
+const user = process.env.DB_USER;
+const password = process.env.DB_PASSWORD;
+const host = process.env.DB_HOST;
+const database = process.env.DB_NAME;
+const port = process.env.DB_PORT || 5432;
 
 const poolConfig = {
     connectionTimeoutMillis: 30000,
     idleTimeoutMillis: 60000,
 };
-
-// If we have separate components, use them to avoid URI parsing issues with special characters
-// Map standard names to their values, checking for Vercel-specific names as fallbacks
-const user = process.env.DB_USER || process.env.DATABASE_POSTGRES_USER || 'postgres';
-const password = process.env.DB_PASSWORD || process.env.DATABASE_POSTGRES_PASSWORD;
-const host = process.env.DB_HOST || process.env.DATABASE_POSTGRES_HOST;
-const database = process.env.DB_NAME || process.env.DATABASE_POSTGRES_DATABASE || 'postgres';
-const port = process.env.DB_PORT || 5432;
 
 if (password && host) {
     Object.assign(poolConfig, {
@@ -28,11 +25,12 @@ if (password && host) {
 } else if (dbUrl) {
     Object.assign(poolConfig, {
         connectionString: dbUrl,
-        ssl: dbUrl.includes('localhost') || dbUrl.includes('127.0.0.1') ? false : { rejectUnauthorized: false },
+        ssl: { rejectUnauthorized: false },
     });
 } else {
-    console.warn('⚠️ No specific Database credentials found. Falling back to default connection logic.');
+    console.error('❌ No Database credentials found in environment variables');
 }
+
 
 
 const pool = new Pool(poolConfig);
